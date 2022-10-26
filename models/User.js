@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { sequelize as db } from '../db/conn.js';
 
 const User = db.define('User', {
-	nome: { type: DataTypes.STRING, require: true },
+	name: { type: DataTypes.STRING, require: true },
 	email: { type: DataTypes.STRING, require: true },
 	password: { type: DataTypes.STRING, require: true },
 });
