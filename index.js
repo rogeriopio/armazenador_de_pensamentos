@@ -55,10 +55,12 @@ app.use(flash());
 
 app.use((req, res, next) => {
 	//criando logica para ver se vai dar andamento no sistema
-
+	console.log('req.session;: ', req.session.userid);
 	if (req.session.userid) {
 		//se tiver logado pega o id do usuario,passa para resposta e depois continua(next())
 		res.locals.session = req.session;
+
+		console.log('res.locals: ', res.locals);
 	}
 	next();
 });
