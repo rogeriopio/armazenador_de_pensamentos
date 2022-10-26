@@ -9,7 +9,7 @@ import path, { dirname } from 'path';
 import os from 'os';
 const FileStore = sessionFileStore(session);
 const app = express();
-console.log('app: ');
+
 const port = 3000;
 
 //Models
@@ -31,9 +31,10 @@ app.use(express.json());
 //session midleware onde o express ira salvar sessoes
 app.use(
 	session({
+		//armazenando a sessão no cookies do navegador, para depois eu resgatá-lo
 		name: 'session',
 		secret: 'nosso_secret',
-		resave: false,
+		resave: false, //caiu a sessão ele vai desconectar
 		saveUninitialized: false,
 		store: new FileStore({
 			logFn: function () {},
@@ -55,16 +56,17 @@ app.use(flash());
 
 app.use((req, res, next) => {
 	//criando logica para ver se vai dar andamento no sistema
-	console.log('req.session;: ', req.session.userid);
 	if (req.session.userid) {
 		//se tiver logado pega o id do usuario,passa para resposta e depois continua(next())
+		//locals serve para passar o template engine uma variavel
+		/*const obj = { id: 2 };
+		res.locals.teste = obj;*/
 		res.locals.session = req.session;
-
-		console.log('res.locals: ', res.locals);
 	}
 	next();
 });
 app.use('/thought', routerThoughts);
+app.use('/thoughts', routerThoughts);
 app.use('/', routerAuth);
 app.get('/', ThoughtController.showThoughts);
 
