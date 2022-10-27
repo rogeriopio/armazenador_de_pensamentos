@@ -65,7 +65,6 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-app.use('/thought', routerThoughts);
 app.use('/thoughts', routerThoughts);
 app.use('/', routerAuth);
 app.get('/', ThoughtController.showThoughts);

@@ -28,7 +28,7 @@ export default class AuthController {
 			res.render('auth/login');
 			return;
 		}
-		//se logou inicializa a sessão
+		//se logou ,inicializa a sessão
 		req.session.userid = user.id;
 		req.flash('message2', `Seja bem vindo ${user.id}!!`);
 		req.session.save(() => res.redirect('/'));
