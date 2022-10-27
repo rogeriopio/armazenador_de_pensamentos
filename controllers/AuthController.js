@@ -2,12 +2,36 @@ import User from '../models/User.js';
 
 import bcrypt from 'bcryptjs';
 
-//vai ficar assim pois não realzia interação com banco de dados
+//vai ficar assim pois não realiza interação com banco de dados
 export default class AuthController {
 	constructor() {}
 
 	static login(req, res) {
 		res.render('auth/login');
+	}
+	static async loginPost(req, res) {
+		const { email, pass } = req.body;
+
+		// find user
+		const user = await User.findOne({ where: { email: email } });
+
+		if (!user) {
+			req.flash('message', 'Usuário não encontrado!!');
+			res.render('auth/login');
+			return;
+		}
+		//check if passwords match
+		const passwordMatch = bcrypt.compareSync(pass, user.password);
+
+		if (!passwordMatch) {
+			req.flash('message', 'Senha invalida!!');
+			res.render('auth/login');
+			return;
+		}
+		//se logou inicializa a sessão
+		req.session.userid = user.id;
+		req.flash('message2', `Seja bem vindo ${user.id}!!`);
+		req.session.save(() => res.redirect('/'));
 	}
 	static register(req, res) {
 		res.render('auth/register');
