@@ -51,12 +51,19 @@
 	color: #004085;
 	background-color: #cce5ff;
 	border: 1px solid #b8daff;
-	border-radius: center;
-	margin: 0 auto 2em;
+	border-radius: 1em;
 	text-align: center;
 	margin: 0 auto 2em;
 	max-width: 60%;
 }
+.message2 {
+	padding: 1em;
+	margin: 0 auto 2em;
+	text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+}
+
 /* LOGIN E REGISTER */
 
 .auth-container {

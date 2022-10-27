@@ -23,7 +23,6 @@
 				<li> <a href='/'>Pensamentos</a> </li>
 				{{! url apos autenticação }}
 				{{#if session.userid}}
-
 					<li> <a href='/thougths/dashboard'>Dashboard</a> </li>
 					<li> <a href='/logout'>Sair</a> </li>
 				{{else}}
@@ -37,6 +36,10 @@
 			{{#if messages.message}}
 				<div class='message'> {{messages.message}}</div>
 			{{/if}}
+			{{#if messages.message2}}
+				<div class='message2'> {{messages.message2}}</div>
+			{{/if}}
+
 			{{{body}}}
 		</div>
 		<footer>
