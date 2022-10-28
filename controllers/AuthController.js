@@ -13,7 +13,7 @@ export default class AuthController {
 		const { email, pass } = req.body;
 
 		// find user
-		const user = await User.findOne({ where: { email: email } });
+		const user = await User.findOne({ raw: true, where: { email: email } });
 
 		if (!user) {
 			req.flash('message', 'Usuário não encontrado!!');
@@ -47,7 +47,10 @@ export default class AuthController {
 			return;
 		}
 		//check if user exists
-		const checkIfUserExists = await User.findOne({ where: { email: email } });
+		const checkIfUserExists = await User.findOne({
+			raw: true,
+			where: { email: email },
+		});
 		if (checkIfUserExists) {
 			req.flash('message', 'O email ja está em uso');
 			res.render('auth/register');
