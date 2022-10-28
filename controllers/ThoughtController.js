@@ -1,25 +1,39 @@
 import Thought from '../models/Thought.js';
 import User from '../models/User.js';
-
+import { Op } from 'sequelize';
 export default class ThoughtController {
 	constructor() {}
 
 	static async showThoughts(req, res) {
-		/*podemos usar dessa forma
-		const thoughtsData = await Thought.findAll({
-			include: User,
-		});
-				const thoughts = thoughtsData.map((result) => result.get({ plain: true }));
+		let search = '';
+		if (req.query.search) {
+			console.log('req.query.search: ', req.query);
+			search = req.query.search;
+		}
+		let order = 'DESC';
+		if (req.query.order === 'old') {
+			order = 'ASC';
+		} else {
+			order = 'DESC';
+		}
+		/*
+		podemos usar dessa forma
+		const thoughtsData = await Thought.findAll({include: User});
+	const thoughts = thoughtsData.map((result) => result.get({ plain: true }));*/
 
-		*/
-		//ou dess
+		//ou desse jeito
 		const thoughts = await Thought.findAll({
 			include: User,
+			where: { title: { [Op.like]: `%${search}%` } },
+			order: [['createdAt', order]],
 			raw: true,
 			nest: true,
 		});
-
-		res.render('thoughts/home', { thoughts });
+		let thoughtsQty = thoughts.length;
+		if (thoughtsQty === 0) {
+			thoughtsQty = false;
+		}
+		res.render('thoughts/home', { thoughts, search, thoughtsQty });
 	}
 	static async dashboard(req, res) {
 		const userId = req.session.userid;
